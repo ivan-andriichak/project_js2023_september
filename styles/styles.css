@@ -1,0 +1,196 @@
+/* Global styles */
+:root {
+    --background-color: #f6faf6;
+    --text-color: #162a16;
+    --button-background: #a8b7a9;
+    --button-hover: #64775f;
+    --button-shadow: 0 4px 6px rgba(12, 11, 11, 0.6);
+    --gradient-background: linear-gradient(45deg, #d3dad5, #4c4f48);
+    --box-shadow: 4px 6px 4px rgba(12, 11, 11, 0.3);
+    --opacity-transition-duration: 0.8s;
+    --border-color: #ccc;
+    --comment-gradient: linear-gradient(-45deg, #d0d5d1, #4c4f48);
+    --comment-box-shadow: var(--box-shadow);
+}
+
+body {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    opacity: 0;
+    transition: opacity var(--opacity-transition-duration) ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+h1 {
+    margin: 15px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.data-label {
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.data-value {
+    font-size: 14px;
+    margin: 5px 0 5px;
+    color: #e9eae9;
+}
+
+/* Styles for the user list container */
+.user-list {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Styles for the user block */
+.user-block {
+    width: 40%;
+    padding: 12px;
+    color: #fadde7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+}
+
+/* Styles for the "Details" button */
+.details-button {
+    width: 100px;
+    background-color: var(--button-background);
+    color: var(--text-color);
+    margin-top: 8px;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(12, 11, 12, 0.6);
+}
+
+/* Styles for the Details button when you hover over it */
+.details-button:hover {
+    color: #faf6f8;
+    background-color: var(--button-hover);
+    box-shadow: var(--box-shadow);
+}
+
+/* Styles for the user details container */
+.user-wrapper {
+    margin: 5px auto 0 auto;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 300px;
+}
+
+/* Styles for the "Post of current user" button */
+#showPostsButton {
+    display: block;
+    width: 90%;
+    margin: 10px auto 10px auto;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styles for the "Post of current user" button when hovered */
+#showPostsButton:hover {
+    color: #faf6f7;
+    background: var(--button-hover);
+    box-shadow: var(--box-shadow);
+}
+
+/* Styles for the container of user posts */
+.user-posts {
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Styling for the user post blocks */
+.user-post-block {
+    width: 21%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: #faddee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+/* Styles for the post titles */
+.user-post-block h3 {
+    text-align: start;
+    font-weight: normal;
+    font-size: 14px;
+    color: #2d1d24;
+    margin: 0;
+}
+
+/* Styling for the post comments container */
+.post-user-wrapper {
+    width: 90%;
+    margin: 5px auto 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+}
+
+.user-data-wrapper {
+    padding: 0 300px 15px 300px;
+}
+
+.comments-container {
+    width: 90%;
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+/* Styling for post comments */
+.post-comment {
+    width: 22%;
+    padding: 10px;
+    color: #2d1d23;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: var(--gradient-background);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease;
+}
