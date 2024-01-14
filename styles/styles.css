@@ -5,7 +5,7 @@
     --button-background: #a8b7a9;
     --button-hover: #64775f;
     --button-shadow: 0 4px 6px rgba(12, 11, 11, 0.6);
-    --gradient-background: linear-gradient(45deg, #d3dad5, #4c4f48);
+    --gradient-background: linear-gradient(-45deg, #cbd2cd, #61645c);
     --box-shadow: 4px 6px 4px rgba(12, 11, 11, 0.3);
     --opacity-transition-duration: 0.8s;
     --border-color: #ccc;
@@ -142,13 +142,11 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    color: #faddee;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-image: var(--gradient-background);
     box-shadow: var(--box-shadow);
     padding: 5px;
-    transition: transform 0.2s ease;
 }
 
 /* Styles for the post titles */
@@ -156,7 +154,7 @@ h1 {
     text-align: start;
     font-weight: normal;
     font-size: 14px;
-    color: #2d1d24;
+    color: var(--text-color);
     margin: 0;
 }
 
@@ -187,10 +185,16 @@ h1 {
 .post-comment {
     width: 22%;
     padding: 10px;
-    color: #2d1d23;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-image: var(--gradient-background);
     box-shadow: var(--box-shadow);
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
 }
+
+.post-comment.enlarged {
+    transform: scale(1.5);
+    border: none;
+}
+

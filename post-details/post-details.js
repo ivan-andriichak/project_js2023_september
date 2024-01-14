@@ -12,53 +12,86 @@ commentsContainer.classList.add('comments-container');
 const urlParams = new URLSearchParams(window.location.search);
 const postId = urlParams.get('id');
 
-// Function to display post details
-function displayPostDetails() {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-        .then(response => response.json())
-        .then(post => {
-            postDetailsContainer.innerHTML = ''; // Clear the container before displaying new data
-            displayKeyValuePairs(post, postUserWrapper); // Call a function to display post information
-
-            // After displaying post information, call a function to display comments
-            displayPostComments();
-        })
-        .catch(error => console.error('Error fetching post information:', error));
+// Function to fetch post details
+async function fetchPostDetails() {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching post information:', error);
+        throw error;
+    }
 }
 
-// Function to display comments for the post
-function displayPostComments() {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-        .then(response => response.json())
-        .then(comments => {
-            // Clear the comments container before displaying new comments
-            commentsContainer.innerHTML = '';
+// Function to fetch comments for the post
+async function fetchPostComments() {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching comments for the post:', error);
+        throw error;
+    }
+}
 
-            comments.forEach(comment => {
-                const commentBlock = document.createElement('div');
-                commentBlock.classList.add('post-comment');
+// Function to display post details
+async function displayPostDetails() {
+    try {
+        const post = await fetchPostDetails();
+        postDetailsContainer.innerHTML = ''; // Clear the container before displaying new data
+        displayKeyValuePairs(post, postUserWrapper); // Call a function to display post information
 
-                // Create and append a label and data element for each comment field
-                for (const key in comment) {
-                    const label = key.charAt(0).toUpperCase() + key.slice(1); // Capitalize the first letter
-                    const labelElement = document.createElement('div');
-                    labelElement.textContent = `${label}: `;
-                    labelElement.classList.add(commonKeyClass); // Use a common class for labels
-                    commentBlock.appendChild(labelElement);
+        // After displaying post information, call a function to display comments
+        await displayPostComments();
 
-                    const dataElement = document.createElement('div');
-                    dataElement.textContent = comment[key];
-                    dataElement.classList.add(commonValueClass); // Use a common class for values
-                    commentBlock.appendChild(dataElement);
-                }
+        return post;
+    } catch (error) {
+        console.error('Error displaying post details:', error);
+        throw error;
+    }
+}
 
-                commentsContainer.appendChild(commentBlock);
+// Function to display comments for the post with a delay
+async function displayPostComments() {
+    try {
+        const comments = await fetchPostComments();
+
+        // Clear the comments container before displaying new comments
+        commentsContainer.innerHTML = '';
+
+        // Iterate through comments with a delay
+        for (const comment of comments) {
+            await new Promise(resolve => setTimeout(resolve, 300)); // Set a delay of 1000 milliseconds (1 second)
+
+            const commentBlock = document.createElement('div');
+            commentBlock.classList.add('post-comment');
+
+            // Create and append a label and data element for each comment field
+            for (const key in comment) {
+                const label = key.charAt(0).toUpperCase() + key.slice(1); // Capitalize the first letter
+                const labelElement = document.createElement('div');
+                labelElement.textContent = `${label}: `;
+                labelElement.classList.add(commonKeyClass); // Use a common class for labels
+                commentBlock.appendChild(labelElement);
+
+                const dataElement = document.createElement('div');
+                dataElement.textContent = comment[key];
+                dataElement.classList.add(commonValueClass); // Use a common class for values
+                commentBlock.appendChild(dataElement);
+            }
+
+            commentBlock.addEventListener('click', () => {
+                commentBlock.classList.toggle('enlarged');
             });
 
-            // Append the comments container to the DOM
+            commentsContainer.appendChild(commentBlock);
+
+            // Append the comments container to the DOM after each comment
             postDetailsContainer.appendChild(commentsContainer);
-        })
-        .catch(error => console.error('Error fetching comments for the post:', error));
+        }
+    } catch (error) {
+        console.error('Error displaying post comments:', error);
+    }
 }
 
 // Function to display post information as key-value pairs

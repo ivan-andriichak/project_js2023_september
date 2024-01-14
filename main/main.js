@@ -7,6 +7,9 @@ const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 function createUserBlock(user) {
     const userBlock = document.createElement('div');
     userBlock.classList.add('user-block');
+    userBlock.appendChild(createUserElement(`№ ${user.id}`));
+    userBlock.appendChild(createUserElement(`Name - ${user.name}`));
+    userBlock.appendChild(createDetailsButton(user));
     return userBlock;
 }
 
@@ -40,11 +43,6 @@ async function getUsers() {
 
         users.forEach(user => {
             const userBlock = createUserBlock(user);
-            const detailsButton = createDetailsButton(user);
-            const userIdElement = createUserElement(`№ ${user.id}`);
-            const userNameElement = createUserElement(`Name - ${user.name}`);
-
-            userBlock.append(userIdElement, userNameElement, detailsButton);
             userList.appendChild(userBlock);
         });
 

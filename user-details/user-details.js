@@ -1,132 +1,159 @@
-// Common class names for styling
-const commonKeyClass = 'data-label';
-const commonValueClass = 'data-value';
+const COMMON_KEY_CLASS = 'data-label';
+const COMMON_VALUE_CLASS = 'data-value';
 
-// Get user ID from URL parameter
 const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('id');
 
-// Get DOM elements
 const userDetailsContainer = document.getElementById('userDetails');
 const userPostsContainer = document.getElementById('userPosts');
 const showPostsButton = document.getElementById('showPostsButton');
 
-// Function to display user details
-function displayUserDetails() {
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-        .then(response => response.json())
-        .then(user => {
-            userDetailsContainer.innerHTML = ''; // Clear the container before displaying new data
-            displayUserData(user, userDetailsContainer); // Call a function to display all user information
-        })
-        .catch(error => console.error('Error fetching user information:', error));
-}
+const fetchUserDetails = async () => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user information:', error);
+        throw error;
+    }
+};
 
-// Function to display user posts
-function displayUserPosts() {
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`)
-        .then(response => response.json())
-        .then(posts => {
-            userPostsContainer.innerHTML = ''; // Clear the container before displaying new data
-            posts.forEach(post => {
-                const postBlock = document.createElement('div');
-                postBlock.classList.add('user-post-block');
+const fetchUserPosts = async () => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user posts:', error);
+        throw error;
+    }
+};
 
-                const postTitle = document.createElement('h3');
-                postTitle.textContent = post.title;
+const displayUserDetails = (user) => {
+    userDetailsContainer.innerHTML = '';
+    displayUserData(user, userDetailsContainer);
+};
 
-                const viewPostButton = document.createElement('button');
-                viewPostButton.textContent = 'View Post';
-                viewPostButton.classList.add('details-button'); // Add a class for button styling
+const displayUserPosts = async (posts) => {
+    userPostsContainer.innerHTML = '';
 
-                // Add an event listener for the "View Post" button
-                viewPostButton.addEventListener('click', () => {
-                    // Redirect to the post details page
-                    window.location.href = `../post-details/post-details.html?id=${post.id}`;
-                });
+    for (const post of posts) {
+        await displayPostWithDelay(post);
+    }
+};
 
-                postBlock.appendChild(postTitle);
-                postBlock.appendChild(viewPostButton);
+const displayPostWithDelay = async (post) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            const postBlock = createPostBlock(post);
+            userPostsContainer.appendChild(postBlock);
+            resolve();
+        }, 100);
+    });
+};
 
-                userPostsContainer.appendChild(postBlock);
-            });
-        })
-        .catch(error => console.error('Error fetching user posts:', error));
-}
+const createPostBlock = (post) => {
+    const postBlock = document.createElement('div');
+    postBlock.classList.add('user-post-block');
 
-// Function to display user data
-function displayUserData(user, parentElement) {
+    const postTitle = document.createElement('h3');
+    postTitle.textContent = post.title;
+
+    const viewPostButton = document.createElement('button');
+    viewPostButton.textContent = 'View Post';
+    viewPostButton.classList.add('details-button');
+
+    viewPostButton.addEventListener('click', () => {
+        window.location.href = `../post-details/post-details.html?id=${post.id}`;
+    });
+
+    postBlock.append(postTitle, viewPostButton);
+    return postBlock;
+};
+
+const displayUserData = (user, parentElement) => {
     for (const key in user) {
         const listItem = document.createElement('div');
         listItem.classList.add('user-data-item');
 
         const itemText = document.createElement('span');
         itemText.textContent = `${key}: `;
-        itemText.classList.add(commonKeyClass); // Use a common class for labels
+        itemText.classList.add(COMMON_KEY_CLASS);
 
         if (typeof user[key] === 'object' && user[key] !== null) {
             const nestedList = document.createElement('div');
             nestedList.classList.add('user-nested-list');
-            displayNestedData(user[key], nestedList); // Call a function to handle nested objects
+            displayNestedData(user[key], nestedList);
             listItem.append(itemText, nestedList);
         } else {
             const valueItem = document.createElement('span');
             valueItem.textContent = user[key];
-            valueItem.classList.add(commonValueClass); // Use a common class for values
+            valueItem.classList.add(COMMON_VALUE_CLASS);
             listItem.append(itemText, valueItem);
         }
 
         parentElement.appendChild(listItem);
     }
-}
+};
 
-// Function to display nested data
-function displayNestedData(data, parentElement) {
+const displayNestedData = (data, parentElement) => {
     for (const key in data) {
         const listItem = document.createElement('div');
         listItem.classList.add('user-nested-item');
 
         const itemText = document.createElement('span');
         itemText.textContent = `${key}: `;
-        itemText.classList.add(commonKeyClass); // Use a common class for labels
+        itemText.classList.add(COMMON_KEY_CLASS);
 
         if (typeof data[key] === 'object' && data[key] !== null) {
             const nestedList = document.createElement('div');
             nestedList.classList.add('user-nested-list');
-            displayNestedData(data[key], nestedList); // Recursively call for nested objects
+            displayNestedData(data[key], nestedList);
             listItem.append(itemText, nestedList);
         } else {
             const valueItem = document.createElement('span');
             valueItem.textContent = data[key];
-            valueItem.classList.add(commonValueClass); // Use a common class for values
+            valueItem.classList.add(COMMON_VALUE_CLASS);
             listItem.append(itemText, valueItem);
         }
 
         parentElement.appendChild(listItem);
     }
-}
+};
 
-let isUserPostsVisible = false; // Initially, the block is not visible
+let isUserPostsVisible = false;
+let hasDisplayedPosts = false;
 
-// Add an event listener for the "Post of current user" button
-showPostsButton.addEventListener('click', () => {
-    const userPosts = document.querySelector('#userPosts'); // Change the selector
-
-    // Check if the block is currently visible
-    if (!isUserPostsVisible) {
-        userPosts.style.display = 'flex'; // Show the block
-    } else {
-        userPosts.style.display = 'none'; // Hide the block
-    }
-
-    // Toggle the visibility state
+const toggleUserPostsVisibility = async () => {
+    const userPosts = document.querySelector('#userPosts');
+    userPosts.style.display = isUserPostsVisible ? 'none' : 'flex';
     isUserPostsVisible = !isUserPostsVisible;
 
-    // Call the function to display user posts only if the block is visible
-    if (isUserPostsVisible) {
-        displayUserPosts();
-    }
-});
+    if (isUserPostsVisible && !hasDisplayedPosts) {
+        try {
+            const [user, posts] = await Promise.all([fetchUserDetails(), fetchUserPosts()]);
+            displayUserDetails(user);
+            await displayUserPosts(posts);
+            hasDisplayedPosts = true;
 
-// Display user information when the page loads
-displayUserDetails();
+        } catch (error) {
+            console.error('Error displaying user details or posts:', error);
+        }
+    }
+};
+
+showPostsButton.addEventListener('click', toggleUserPostsVisibility);
+
+(async () => {
+    try {
+        const user = await fetchUserDetails();
+        displayUserDetails(user);
+
+        if (isUserPostsVisible && !hasDisplayedPosts) {
+            const posts = await fetchUserPosts();
+            await displayUserPosts(posts);
+            hasDisplayedPosts = true;
+        }
+    } catch (error) {
+        console.error('Error displaying user details:', error);
+    }
+})();
