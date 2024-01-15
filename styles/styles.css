@@ -1,7 +1,7 @@
 /* Global styles */
 :root {
     --background-color: #f6faf6;
-    --text-color: #162a16;
+    --text-color: #112a11;
     --button-background: #a8b7a9;
     --button-hover: #64775f;
     --button-shadow: 0 4px 6px rgba(12, 11, 11, 0.6);
@@ -11,6 +11,7 @@
     --border-color: #ccc;
     --comment-gradient: linear-gradient(-45deg, #d0d5d1, #4c4f48);
     --comment-box-shadow: var(--box-shadow);
+    --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -31,6 +32,7 @@ h1 {
     margin: 15px;
     color: var(--text-color);
     text-align: center;
+    text-shadow:var(--text-shadow);
 }
 
 .data-label {
@@ -39,9 +41,10 @@ h1 {
 }
 
 .data-value {
-    font-size: 14px;
+    font-size: 16px;
     margin: 5px 0 5px;
     color: #e9eae9;
+    text-shadow:var(--text-shadow);
 }
 
 /* Styles for the user list container */
@@ -58,7 +61,6 @@ h1 {
 .user-block {
     width: 40%;
     padding: 12px;
-    color: #fadde7;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-image: var(--gradient-background);
@@ -77,7 +79,7 @@ h1 {
     border-radius: 3px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(12, 11, 12, 0.6);
+    box-shadow: var(--box-shadow);
 }
 
 /* Styles for the Details button when you hover over it */

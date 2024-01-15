@@ -1,13 +1,16 @@
-const COMMON_KEY_CLASS = 'data-label';
-const COMMON_VALUE_CLASS = 'data-value';
+// Constants for CSS classes
+const commonKeyClass = 'data-label',
+      commonValueClass = 'data-value';
+// Fetching user ID from URL parameters
+const urlParams = new URLSearchParams(window.location.search),
+      userId = urlParams.get('id');
 
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id');
+// DOM elements
+const userDetailsContainer = document.getElementById('userDetails'),
+      userPostsContainer = document.getElementById('userPosts'),
+      showPostsButton = document.getElementById('showPostsButton');
 
-const userDetailsContainer = document.getElementById('userDetails');
-const userPostsContainer = document.getElementById('userPosts');
-const showPostsButton = document.getElementById('showPostsButton');
-
+// Function to fetch user details from the API
 const fetchUserDetails = async () => {
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
@@ -18,6 +21,7 @@ const fetchUserDetails = async () => {
     }
 };
 
+// Function to fetch user posts from the API
 const fetchUserPosts = async () => {
     try {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}/posts`);
@@ -28,11 +32,13 @@ const fetchUserPosts = async () => {
     }
 };
 
+// Function to display user details in the DOM
 const displayUserDetails = (user) => {
     userDetailsContainer.innerHTML = '';
     displayUserData(user, userDetailsContainer);
 };
 
+// Function to display user posts in the DOM with a delay
 const displayUserPosts = async (posts) => {
     userPostsContainer.innerHTML = '';
 
@@ -41,6 +47,7 @@ const displayUserPosts = async (posts) => {
     }
 };
 
+// Function to display a post with a delay
 const displayPostWithDelay = async (post) => {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -51,6 +58,7 @@ const displayPostWithDelay = async (post) => {
     });
 };
 
+// Function to create a post block element
 const createPostBlock = (post) => {
     const postBlock = document.createElement('div');
     postBlock.classList.add('user-post-block');
@@ -70,6 +78,7 @@ const createPostBlock = (post) => {
     return postBlock;
 };
 
+// Function to display user data in the DOM
 const displayUserData = (user, parentElement) => {
     for (const key in user) {
         const listItem = document.createElement('div');
@@ -77,7 +86,7 @@ const displayUserData = (user, parentElement) => {
 
         const itemText = document.createElement('span');
         itemText.textContent = `${key}: `;
-        itemText.classList.add(COMMON_KEY_CLASS);
+        itemText.classList.add(commonKeyClass);
 
         if (typeof user[key] === 'object' && user[key] !== null) {
             const nestedList = document.createElement('div');
@@ -87,7 +96,7 @@ const displayUserData = (user, parentElement) => {
         } else {
             const valueItem = document.createElement('span');
             valueItem.textContent = user[key];
-            valueItem.classList.add(COMMON_VALUE_CLASS);
+            valueItem.classList.add(commonValueClass);
             listItem.append(itemText, valueItem);
         }
 
@@ -95,6 +104,7 @@ const displayUserData = (user, parentElement) => {
     }
 };
 
+// Function to display nested data in the DOM
 const displayNestedData = (data, parentElement) => {
     for (const key in data) {
         const listItem = document.createElement('div');
@@ -102,7 +112,7 @@ const displayNestedData = (data, parentElement) => {
 
         const itemText = document.createElement('span');
         itemText.textContent = `${key}: `;
-        itemText.classList.add(COMMON_KEY_CLASS);
+        itemText.classList.add(commonKeyClass);
 
         if (typeof data[key] === 'object' && data[key] !== null) {
             const nestedList = document.createElement('div');
@@ -112,7 +122,7 @@ const displayNestedData = (data, parentElement) => {
         } else {
             const valueItem = document.createElement('span');
             valueItem.textContent = data[key];
-            valueItem.classList.add(COMMON_VALUE_CLASS);
+            valueItem.classList.add(commonValueClass);
             listItem.append(itemText, valueItem);
         }
 
@@ -120,9 +130,11 @@ const displayNestedData = (data, parentElement) => {
     }
 };
 
+// State variables for post visibility
 let isUserPostsVisible = false;
 let hasDisplayedPosts = false;
 
+// Function to toggle the visibility of user posts
 const toggleUserPostsVisibility = async () => {
     const userPosts = document.querySelector('#userPosts');
     userPosts.style.display = isUserPostsVisible ? 'none' : 'flex';
@@ -141,8 +153,10 @@ const toggleUserPostsVisibility = async () => {
     }
 };
 
+// Event listener for the show posts button
 showPostsButton.addEventListener('click', toggleUserPostsVisibility);
 
+// Immediately invoked function to initialize the user details and posts
 (async () => {
     try {
         const user = await fetchUserDetails();

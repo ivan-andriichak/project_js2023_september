@@ -1,7 +1,7 @@
 // Common class names for styling
-const commonValueClass = 'data-value';
-const userList = document.getElementById('userList');
-const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+const commonValueClass = 'data-value',
+      userList = document.getElementById('userList'),
+      apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
 // Function to create user block
 function createUserBlock(user) {

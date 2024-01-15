@@ -1,16 +1,16 @@
 // Common class names for styling
-const commonKeyClass = 'data-label';
-const commonValueClass = 'data-value';
+const commonKeyClass = 'data-label',
+      commonValueClass = 'data-value';
 
 // Get DOM elements
-const postUserWrapper = document.getElementById('post-user-wrapper');
-const postDetailsContainer = document.getElementById('postDetails');
-const commentsContainer = document.createElement('div'); // Create a container for comments
-commentsContainer.classList.add('comments-container');
+const postUserWrapper = document.getElementById('post-user-wrapper'),
+      postDetailsContainer = document.getElementById('postDetails'),
+      commentsContainer = document.createElement('div'); // Create a container for comments
+      commentsContainer.classList.add('comments-container');
 
 // Get the post ID from the URL parameter
-const urlParams = new URLSearchParams(window.location.search);
-const postId = urlParams.get('id');
+const urlParams = new URLSearchParams(window.location.search),
+      postId = urlParams.get('id');
 
 // Function to fetch post details
 async function fetchPostDetails() {
@@ -120,4 +120,7 @@ function displayKeyValuePairs(data, parentElement) {
 }
 
 // Call the function to display post details when the page loads
-displayPostDetails();
+(async () => {
+    await displayPostDetails();
+    console.log('Data fetched successfully');
+})();
